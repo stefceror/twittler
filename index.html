@@ -3,25 +3,68 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+	<style type='text/css'>
+		.tweet {
+			width:50%; 
+			background-color:teal; 
+			margin:auto
+			}
+		.button{
+			width:100px;
+			background-color:magenta;
+			float:left;
+			}
+	</style>
   </head>
   <body>
     <script>
-
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+	
+	//I took the delay function from my underbar assignment to check for tweets periodically.
+	delay = function(func, wait) {
+		var args =  Array.prototype.slice.call(arguments)
+		args = args.slice(2);
+		setTimeout(function () {
+			func.apply(this, args)
+			}, wait);
+	};
+	function pushTweets (oldCount) {
+		var $body = $('body');
+        //$body.html('');
 
         var index = streams.home.length - 1;
-        while(index >= 0){
+        while(index >= oldCount){
           var tweet = streams.home[index];
           var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
+          $tweet.text('@' + tweet.user + ': ' + tweet.message + " at: " + tweet.created_at);
+          $('.tweet').append($tweet);
           index -= 1;
         }
-
+	}
+	var schedulePushTweets = function(oldCount){
+		pushTweets(oldCount);
+		index = streams.home.length-1;
+		setTimeout(function () {
+			schedulePushTweets(index)
+			}, 5000);
+	};
+	
+	
+    $(document).ready(function(){
+		pushTweets(0);
+		var index = streams.home.length - 1;
+		schedulePushTweets(index);
+	//while(true) {
+			//delay(pushTweets, 5000, index);
+	//}
+	$('.button').click(function () {
+		pushTweets(index);
+		index = streams.home.length-1;
+		});
+		
       });
 
     </script>
+	<div class='button'>Button</div>
+	<div class='tweet' > </div>
   </body>
 </html>
