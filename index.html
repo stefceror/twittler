@@ -37,13 +37,14 @@
           var tweet = streams.home[index];
 		  var $uname = $('<div class = "uname"></div>');
 		  $uname.text('@' + tweet.user);
-          var $tweet = $('<div></div>');
+          var $tweet = $('<div class = "text"></div>');
           $tweet.text(tweet.message);
 		  var $postTime = $('<div class="postTime"></div>');
 		  $postTime.text('at: ' + tweet.created_at);
-		  $('.tweet').append($uname);
-          $('.tweet').append($tweet);
-		  $('.tweet').append($postTime);
+		  $('.tweetContain').prepend('<div class="tweet"></div>');
+		  $('.tweet:first').append($uname);
+          $('.tweet:first').append($tweet);
+		  $('.tweet:first').append($postTime);
           index -= 1;
         }
 	}
@@ -60,18 +61,10 @@
 		pushTweets(0);
 		var index = streams.home.length - 1;
 		schedulePushTweets(index);
-	//while(true) {
-			//delay(pushTweets, 5000, index);
-	//}
-	$('.button').click(function () {
-		pushTweets(index);
-		index = streams.home.length-1;
-		});
-		
+
       });
 
     </script>
-	<div class='button'>Button</div>
-	<div class='tweet' > </div>
+	<div class='tweetContain' > </div>
   </body>
 </html>
