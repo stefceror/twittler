@@ -33,8 +33,8 @@
         //$body.html('');
 
         var index = streams.home.length - 1;
-        while(index >= oldCount){
-          var tweet = streams.home[index];
+        while(oldCount <= index){
+          var tweet = streams.home[oldCount];
 		  var $uname = $('<div class = "uname"></div>');
 		  $uname.text('@' + tweet.user);
           var $tweet = $('<div class = "text"></div>');
@@ -45,7 +45,7 @@
 		  $('.tweet:first').append($uname);
           $('.tweet:first').append($tweet);
 		  $('.tweet:first').append($postTime);
-          index -= 1;
+         oldCount += 1;
         }
 	}
 	var schedulePushTweets = function(oldCount){
@@ -59,8 +59,8 @@
 	
     $(document).ready(function(){
 		pushTweets(0);
-		var index = streams.home.length - 1;
-		schedulePushTweets(index);
+		var currCount = streams.home.length - 1;
+		schedulePushTweets(currCount);
 
       });
 
