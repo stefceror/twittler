@@ -3,31 +3,40 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+	<script src="moment.js"></script>
 	<style type='text/css'>
+		body{
+			background-color:SteelBlue;
+		}
 		.tweet {
-			width:50%; 
-			background-color:black; 
-			margin:auto
-			}
+			width:500px; 
+			background-color:LightSteelBlue; 
+			margin:auto;
+			border:solid 1px DarkSlateGray;
+		}
 		.button{
 			width:100px;
 			background-color:magenta;
 			float:left;
-			}
+		}
 		.uname{
-			color:blue;
-			}
-			div {
-				clear:both;
-				color:limegreen;
-				}
+			color:navy;
+		}
+		div {
+			clear:both;
+			color:DarkSlateGray;
+		}
+		.postTime{
+			text-align:right;
+		}
+		.text{
+			font-size:14pt;
+		}
 	</style>
   </head>
   <body>
     <script>
 	
-	//I took the delay function from my underbar assignment to check for tweets periodically.
-
 	function pushTweets (oldCount) {
 		var $body = $('body');
         //$body.html('');
@@ -40,7 +49,7 @@
           var $tweet = $('<div class = "text"></div>');
           $tweet.text(tweet.message);
 		  var $postTime = $('<div class="postTime"></div>');
-		  $postTime.text('at: ' + tweet.created_at);
+		  $postTime.text(moment().calendar(tweet.created_at));
 		  $('.tweetContain').prepend('<div class="tweet"></div>');
 		  $('.tweet:first').append($uname);
           $('.tweet:first').append($tweet);
@@ -50,7 +59,7 @@
 	}
 	var schedulePushTweets = function(oldCount){
 		pushTweets(oldCount);
-		index = streams.home.length-1;
+		index = streams.home.length;
 		setTimeout(function () {
 			schedulePushTweets(index)
 			}, 5000);
@@ -59,7 +68,7 @@
 	
     $(document).ready(function(){
 		pushTweets(0);
-		var currCount = streams.home.length - 1;
+		var currCount = streams.home.length ;
 		schedulePushTweets(currCount);
 
       });
