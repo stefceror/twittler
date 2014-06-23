@@ -37,13 +37,13 @@
   <body>
     <script>
 	
-	function pushTweets (oldCount) {
+	function pushTweets (oldCount, tweetArray) {
 		var $body = $('body');
         //$body.html('');
 
-        var index = streams.home.length - 1;
+        var index = tweetArray.length - 1;
         while(oldCount <= index){
-          var tweet = streams.home[oldCount];
+          var tweet = tweetArray[oldCount];
 		  var $uname = $('<div class = "uname"></div>');
 		  $uname.text('@' + tweet.user);
           var $tweet = $('<div class = "text"></div>');
@@ -57,19 +57,19 @@
          oldCount += 1;
         }
 	}
-	var schedulePushTweets = function(oldCount){
-		pushTweets(oldCount);
+	var schedulePushTweets = function(oldCount, tweetArray){
+		pushTweets(oldCount, tweetArray);
 		index = streams.home.length;
 		setTimeout(function () {
-			schedulePushTweets(index)
+			schedulePushTweets(index, tweetArray)
 			}, 5000);
 	};
 	
 	
     $(document).ready(function(){
-		pushTweets(0);
+		pushTweets(0, streams.home);
 		var currCount = streams.home.length ;
-		schedulePushTweets(currCount);
+		schedulePushTweets(currCount, streams.home);
 
       });
 
