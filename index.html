@@ -57,20 +57,31 @@
          oldCount += 1;
         }
 	}
+	//return id of set timeout for cancelling later something weird with recursion?
 	var schedulePushTweets = function(oldCount, tweetArray){
 		pushTweets(oldCount, tweetArray);
-		index = streams.home.length;
-		setTimeout(function () {
+		index = tweetArray.length;
+		var funcID = setTimeout(function () {
 			schedulePushTweets(index, tweetArray)
-			}, 5000);
+			}, 15000);
+			$('.uname').click (function (event) {
+			console.log(event.target.textContent + funcID);
+			window.clearTimeout(funcID);
+			$('.tweetContain').empty();
+			var userChoice = event.target.textContent;
+			userChoice = userChoice.slice(1, userChoice.length);
+			pushTweets(0, streams.users[userChoice]);
+			var currCount = streams.users[userChoice].length ;
+			schedulePushTweets(currCount, streams.users[userChoice]);
+			});
+			return funcID;
 	};
-	
 	
     $(document).ready(function(){
 		pushTweets(0, streams.home);
 		var currCount = streams.home.length ;
-		schedulePushTweets(currCount, streams.home);
-
+		var scheduleID = schedulePushTweets(currCount, streams.home);
+		
       });
 
     </script>
