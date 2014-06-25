@@ -21,6 +21,7 @@
 		}
 		.uname{
 			color:navy;
+			cursor:pointer;
 		}
 		div {
 			clear:both;
@@ -31,6 +32,16 @@
 		}
 		.text{
 			font-size:14pt;
+		}
+		.home{
+			background-color:Navy;
+			color:LightSteelBlue;
+			font-size:24px;
+			width:500px;
+			margin:auto;
+			text-align:center;
+			padding:20px 0px;
+			cursor:pointer;
 		}
 	</style>
   </head>
@@ -57,7 +68,7 @@
          oldCount += 1;
         }
 	}
-	//return id of set timeout for cancelling later something weird with recursion?
+
 	var schedulePushTweets = function(oldCount, tweetArray){
 		pushTweets(oldCount, tweetArray);
 		index = tweetArray.length;
@@ -65,14 +76,21 @@
 			schedulePushTweets(index, tweetArray)
 			}, 15000);
 			$('.uname').click (function (event) {
-			console.log(event.target.textContent + funcID);
 			window.clearTimeout(funcID);
 			$('.tweetContain').empty();
-			var userChoice = event.target.textContent;
-			userChoice = userChoice.slice(1, userChoice.length);
-			pushTweets(0, streams.users[userChoice]);
-			var currCount = streams.users[userChoice].length ;
-			schedulePushTweets(currCount, streams.users[userChoice]);
+				var userChoice = event.target.textContent;
+				userChoice = userChoice.slice(1, userChoice.length);
+				pushTweets(0, streams.users[userChoice]);
+				var currCount = streams.users[userChoice].length ;
+				schedulePushTweets(currCount, streams.users[userChoice]);
+			});
+			
+			$('.home').click (function (event) {
+				window.clearTimeout(funcID);
+				$('.tweetContain').empty();
+				pushTweets(0, streams.home);
+				var currCount = streams.home.length ;
+				var scheduleID = schedulePushTweets(currCount, streams.home);
 			});
 			return funcID;
 	};
@@ -85,6 +103,7 @@
       });
 
     </script>
+	<div class='home'>Twittler</div>
 	<div class='tweetContain' > </div>
   </body>
 </html>
